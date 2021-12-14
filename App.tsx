@@ -3,9 +3,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import Login from './Login'
-import ReferralScreen from './ReferralScreen'
-import WaitingRoom from './WaitingRoom'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import Login from './screens/Login'
+import ReferralScreen from './screens/ReferralScreen'
+import WaitingRoom from './screens/WaitingRoom'
 
 const Stack = createNativeStackNavigator()
 
@@ -15,15 +16,20 @@ export default function App() {
 		//   <Text>Open up App.tsx to start working on your app!</Text>
 		//   <StatusBar style="auto" />
 		// </View>
+		// <SafeAreaView>
 		<NavigationContainer>
+			<StatusBar style="light" translucent={true} />
 			<Stack.Navigator>
 				<Stack.Screen name="Login" component={Login} />
-				<Stack.Screen name="WaitingRoom" component={WaitingRoom} />
+				<Stack.Screen name="WaitingRoom" component={WaitingRoom} options={{ headerShown: false }} />
 				<Stack.Screen name="ReferralScreen" component={ReferralScreen} />
 			</Stack.Navigator>
 		</NavigationContainer>
+		// </SafeAreaView>
 	)
 }
+
+function Header() {}
 
 const styles = StyleSheet.create({
 	container: {

@@ -1,7 +1,7 @@
 import React from 'react'
-import { View, Text, Share, Button } from 'react-native'
+import { View, Text, Share } from 'react-native'
 
-export default function WaitingRoom() {
+export default function ReferralScreen() {
 	const onShare = async () => {
 		try {
 			const result = await Share.share({
@@ -20,10 +20,9 @@ export default function WaitingRoom() {
 			console.error(error)
 		}
 	}
-
 	return (
 		<View>
-			<Button title="Share" onPress={onShare}></Button>
+			<Text>ReferralScreen</Text>
 		</View>
 	)
 }
