@@ -1,18 +1,9 @@
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
-import {
-	View,
-	Text,
-	Share,
-	Image,
-	StyleSheet,
-	TextInput,
-	KeyboardAvoidingView,
-	Pressable,
-	ScrollView,
-} from 'react-native'
+import { View, Image, StyleSheet, TextInput, KeyboardAvoidingView, Pressable, ScrollView } from 'react-native'
+import { BoldText, RegularText } from '../components/AppText'
 
-export default function WaitingRoom() {
+export default function WaitingRoom({ navigation }: any) {
 	return (
 		<ScrollView style={pageStyles.page}>
 			<KeyboardAvoidingView behavior="position" keyboardVerticalOffset={0}>
@@ -20,7 +11,7 @@ export default function WaitingRoom() {
 					<View style={logoHeaderStyles.imageContainer}>
 						<Image style={logoHeaderStyles.logo} source={require('../assets/logo-fingo-small.png')} />
 					</View>
-					<Text style={logoHeaderStyles.logoText}>Fingo Africa</Text>
+					<BoldText style={logoHeaderStyles.logoText}>Fingo Africa</BoldText>
 				</View>
 
 				<View style={waitingTextStyles.wrapper}>
@@ -28,20 +19,20 @@ export default function WaitingRoom() {
 						<Image style={waitingTextStyles.icon} source={require('../assets/exclamation2.png')} />
 					</View>
 
-					<Text style={waitingTextStyles.waitingText}>
+					<RegularText style={waitingTextStyles.waitingText}>
 						You are
 						{'\n'}
-						<Text style={waitingTextStyles.waitingPosition}>5th</Text>
+						<BoldText style={waitingTextStyles.waitingPosition}>5th</BoldText>
 						{'\n'}
 						in the waiting list
-					</Text>
+					</RegularText>
 				</View>
 
-				<Text style={referralStyles.textReferral}>Enter a referral code to start using the app.</Text>
+				<BoldText style={referralStyles.textReferral}>Enter a referral code to start using the app.</BoldText>
 				<TextInput style={referralStyles.codeInput} placeholder="Referral code" />
 
-				<Pressable>
-					<Text style={referralStyles.linkReferralsText}>Share my referral code</Text>
+				<Pressable onPress={() => navigation.navigate('ReferralScreen')}>
+					<BoldText style={referralStyles.linkReferralsText}>Share my referral code</BoldText>
 				</Pressable>
 			</KeyboardAvoidingView>
 		</ScrollView>
@@ -77,7 +68,6 @@ const logoHeaderStyles = StyleSheet.create({
 	},
 	logoText: {
 		color: '#FFF',
-		fontWeight: 'bold',
 		fontSize: 32,
 	},
 })
@@ -109,7 +99,7 @@ const waitingTextStyles = StyleSheet.create({
 		marginBottom: 40,
 	},
 	waitingPosition: {
-		fontWeight: 'bold',
+		// fontWeight: 'bold',
 	},
 })
 
@@ -117,7 +107,7 @@ const referralStyles = StyleSheet.create({
 	wrapper: {
 		textAlign: 'center',
 	},
-	textReferral: { fontWeight: 'bold', color: '#fff', fontSize: 24, textAlign: 'center', marginBottom: 20 },
+	textReferral: { color: '#fff', fontSize: 24, textAlign: 'center', marginBottom: 30 },
 	codeInput: {
 		backgroundColor: '#fff',
 		elevation: 10,
@@ -126,7 +116,9 @@ const referralStyles = StyleSheet.create({
 		paddingHorizontal: 20,
 		fontSize: 20,
 		textAlign: 'center',
-		marginBottom: 20,
+		marginBottom: 50,
+		marginHorizontal: 10,
+		fontFamily: 'DMSans_400Regular',
 	},
 	linkReferrals: {
 		display: 'flex',
@@ -138,6 +130,5 @@ const referralStyles = StyleSheet.create({
 		textDecorationStyle: 'solid',
 		color: '#fff',
 		fontSize: 20,
-		fontWeight: 'bold',
 	},
 })
