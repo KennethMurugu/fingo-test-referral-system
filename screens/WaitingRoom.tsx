@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
-import { View, Image, StyleSheet, TextInput, KeyboardAvoidingView, Pressable, ScrollView } from 'react-native'
+import { View, Image, StyleSheet, KeyboardAvoidingView, Pressable, ScrollView } from 'react-native'
 import { BoldText, RegularText } from '../components/AppText'
+import { AppTextInput } from '../components/AppTextInput'
 
 export default function WaitingRoom({ navigation }: any) {
 	return (
@@ -29,7 +30,7 @@ export default function WaitingRoom({ navigation }: any) {
 				</View>
 
 				<BoldText style={referralStyles.textReferral}>Enter a referral code to start using the app.</BoldText>
-				<TextInput style={referralStyles.codeInput} placeholder="Referral code" />
+				<AppTextInput placeholder="Referral code" />
 
 				<Pressable onPress={() => navigation.navigate('ReferralScreen')}>
 					<BoldText style={referralStyles.linkReferralsText}>Share my referral code</BoldText>
@@ -108,18 +109,7 @@ const referralStyles = StyleSheet.create({
 		textAlign: 'center',
 	},
 	textReferral: { color: '#fff', fontSize: 24, textAlign: 'center', marginBottom: 30 },
-	codeInput: {
-		backgroundColor: '#fff',
-		elevation: 10,
-		borderRadius: 50,
-		paddingVertical: 15,
-		paddingHorizontal: 20,
-		fontSize: 20,
-		textAlign: 'center',
-		marginBottom: 50,
-		marginHorizontal: 10,
-		fontFamily: 'DMSans_400Regular',
-	},
+
 	linkReferrals: {
 		display: 'flex',
 		justifyContent: 'center',

@@ -21,3 +21,7 @@ export function claimed_referrals() {
 export function redeem_referral(referral_code: string) {
 	return axios.post<String>('/redeem_referral', { referral_code })
 }
+
+export function login(params: { username: string; password: string }) {
+	return axios.post<String>('/login', params)
+}
