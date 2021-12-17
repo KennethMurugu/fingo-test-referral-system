@@ -3,7 +3,7 @@ import { Text } from 'react-native'
 
 function AppText(props: any) {
 	return (
-		<Text {...props} style={{ fontFamily: 'DMSans_700Bold', fontSize: 20, ...props.style }}>
+		<Text {...props} style={{ fontFamily: 'DMSans_700Bold', fontSize: 20, color: '#FFF', ...props.style }}>
 			{props.children}
 		</Text>
 	)

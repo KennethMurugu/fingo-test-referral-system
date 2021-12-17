@@ -11,9 +11,13 @@ export type Referral = {
 	password: string // "password",
 	referralCode: string // "fri111",
 	claimedAt: string //"2020-01-01T00:00:00.000Z",
-	profilePicture: ImageSourcePropType // "https://picsum.photos/200"
+	profilePicture: string // "https://picsum.photos/200"
 }
 
 export function claimed_referrals() {
 	return axios.get<{ data: Referral[] }>('/claimed_referrals')
+}
+
+export function redeem_referral(referral_code: string) {
+	return axios.post<String>('/redeem_referral', { referral_code })
 }

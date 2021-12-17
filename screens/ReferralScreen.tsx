@@ -1,8 +1,9 @@
 import axios from 'axios'
-import React, { useState } from 'react'
-import { View, Text, Share, StyleSheet, Image, Pressable, ImageSourcePropType } from 'react-native'
+import dayjs from 'dayjs'
+import React, { useEffect, useState } from 'react'
+import { View, Text, Share, StyleSheet, Image, Pressable, ImageSourcePropType, ScrollView } from 'react-native'
 import { claimed_referrals, Referral } from '../api'
-import { BoldText } from '../components/AppText'
+import { BoldText, RegularText } from '../components/AppText'
 
 const onShare = async () => {
 	try {
@@ -107,42 +108,112 @@ const btnShareCodeStyle = StyleSheet.create({
 })
 
 function ClaimedReferrals() {
-	// const referralItems: typeof ReferralItem[] = []
-
 	const [referralItems, setreferralItems] = useState<JSX.Element[]>([])
 
-	async function getClaimedReferrals() {
-		const response = await claimed_referrals()
-
-		// console.log(data)
-		response.data.data.map((referral) => {
-			const r = <ReferralItem />
-			referralItems.push(r)
-			setreferralItems([...referralItems])
-		})
+	function getReferralsLeft() {
+		const maxReferrals = 5
+		return Math.max(0, maxReferrals - referralItems.length) //prevent negative
 	}
 
-	getClaimedReferrals()
+	useEffect(() => {
+		getClaimedReferrals()
+	}, [])
+
+	async function getClaimedReferrals() {
+		// setreferralItems(() => [])
+		const response = await claimed_referrals()
+
+		const items: JSX.Element[] = []
+		response.data.data.map((referral) => {
+			items.push(<ReferralItem referral={referral} key={referral._id} />)
+		})
+		setreferralItems(items)
+	}
 
 	return (
 		<View style={claimedReferralsStyles.wrapper}>
-			<BoldText style={claimedReferralsStyles.headerText}>Claimed Referrals</BoldText>
+			<View style={claimedReferralsStyles.headerWrapper}>
+				<BoldText style={claimedReferralsStyles.headerText}>Claimed Referrals</BoldText>
+				<BoldText style={claimedReferralsStyles.referralsLeft}>{getReferralsLeft()} referrals left</BoldText>
+			</View>
 
-			{referralItems}
+			<View>{referralItems}</View>
 		</View>
 	)
 }
 const claimedReferralsStyles = StyleSheet.create({
 	wrapper: {
-		padding: 10,
+		paddingHorizontal: 15,
+		paddingVertical: 20,
+	},
+	headerWrapper: {
+		marginBottom: 20,
+		display: 'flex',
+		justifyContent: 'space-between',
+		flexDirection: 'row',
+		alignItems: 'center',
 	},
 	headerText: {
 		color: '#fff',
 		fontSize: 20,
+		marginRight: 10,
+	},
+	referralsLeft: {
+		backgroundColor: '#3FCAF5',
+		paddingHorizontal: 10,
+		paddingVertical: 5,
+		borderRadius: 5,
+	},
+	referralsList: {
+		display: 'flex',
+		flexDirection: 'column',
 	},
 })
 
-function ReferralItem(): JSX.Element {
-	// const referral: Referral = props.referral
-	return <View>{/* <Image source={referral.profilePicture} /> */}</View>
+function ReferralItem(props: any) {
+	const referral: Referral = props.referral
+
+	function formateClaimedAt(claimedAt: string) {
+		return dayjs(claimedAt).format('hh:mm A D MMM YYYY')
+	}
+
+	return (
+		<View style={referralItemStyle.wrapper}>
+			<Image
+				style={referralItemStyle.profilePicture}
+				source={{ uri: referral.profilePicture, width: 50, height: 50 }}
+			/>
+
+			<View>
+				<BoldText>{referral.name}</BoldText>
+				<RegularText style={referralItemStyle.claimedAt}>{formateClaimedAt(referral.claimedAt)}</RegularText>
+			</View>
+		</View>
+	)
 }
+
+const referralItemStyle = StyleSheet.create({
+	wrapper: {
+		// borderWidth: 1,
+		// borderColor: 'red',
+		paddingVertical: 10,
+		paddingHorizontal: 10,
+		marginBottom: 10,
+		backgroundColor: 'rgba(0, 0, 0, 0.075)',
+		borderRadius: 5,
+		display: 'flex',
+		flexDirection: 'row',
+	},
+	profilePicture: {
+		width: 50,
+		height: 50,
+		borderRadius: 25,
+		// borderWidth: 1,
+		// borderColor: 'blue',
+		marginRight: 15,
+	},
+	claimedAt: {
+		color: '#cecece',
+		fontSize: 16,
+	},
+})
