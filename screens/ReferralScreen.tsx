@@ -1,7 +1,17 @@
 import axios from 'axios'
 import dayjs from 'dayjs'
-import React, { useEffect, useState } from 'react'
-import { View, Text, Share, StyleSheet, Image, Pressable, ImageSourcePropType, ScrollView } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
+import {
+	View,
+	Text,
+	Share,
+	StyleSheet,
+	Image,
+	Pressable,
+	ImageSourcePropType,
+	ScrollView,
+	Animated,
+} from 'react-native'
 import { claimed_referrals, Referral } from '../api'
 import { BoldText, RegularText } from '../components/AppText'
 
@@ -74,6 +84,7 @@ const infoStyles = StyleSheet.create({
 })
 
 function BtnShareCode() {
+	const fadeAnim = useRef(new Animated.Value(0)).current
 	return (
 		<Pressable style={btnShareCodeStyle.wrapper} onPress={onShare}>
 			<BoldText style={btnShareCodeStyle.code}>getin123</BoldText>
@@ -109,6 +120,7 @@ const btnShareCodeStyle = StyleSheet.create({
 
 function ClaimedReferrals() {
 	const [referralItems, setreferralItems] = useState<JSX.Element[]>([])
+	const [isLoading, setisLoading] = useState(true)
 
 	function getReferralsLeft() {
 		const maxReferrals = 5
@@ -128,6 +140,7 @@ function ClaimedReferrals() {
 			items.push(<ReferralItem referral={referral} key={referral._id} />)
 		})
 		setreferralItems(items)
+		setisLoading(false)
 	}
 
 	return (
@@ -137,7 +150,7 @@ function ClaimedReferrals() {
 				<BoldText style={claimedReferralsStyles.referralsLeft}>{getReferralsLeft()} referrals left</BoldText>
 			</View>
 
-			<View>{referralItems}</View>
+			<View>{isLoading ? <BoldText>Loading...</BoldText> : referralItems}</View>
 		</View>
 	)
 }
